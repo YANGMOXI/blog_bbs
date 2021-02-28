@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row">
+        {#        <div class="col-md-8"></div>#}
+        <h3>修改头像</h3>
+        <hr>
+
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p>
+                <label for="myfile">
+{#                    <h4>新头像</h4>#}
+                    {% load static %}
+                    <img src="/media/{{ request.user.avatar }}" id="myimg" alt="" width="150"
+                         style="margin-left: 10px">
+                </label>
+                <input type="file" id="myfile" name="avatar" style="display: none">
+
+            </p>
+            <input type="submit" class="btn btn-info" style="margin-left: 50px">
+        </form>
+
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        // 用户上传文件，实时展示在浏览器
+        $('#myfile').change(function () {
+            let myFileReaderObj = new FileReader();
+            let fileObj = $(this)[0].files[0];
+            myFileReaderObj.readAsDataURL(fileObj)
+            myFileReaderObj.onload = function () {
+                $('#myimg').attr('src', myFileReaderObj.result)
+            }
+        })
+    </script>
+{% endblock %}
